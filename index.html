@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Zanzibar Interactive Map</title>
+<style>
+#map {
+width: 100%;
+height: 500px;
+}
+body { padding: 0; margin: 0; } 
+html, body, #map { height: 100%; }
+
+.info { 
+    padding: 6px 8px; 
+    font: 14px/16px Arial, Helvetica, sans-serif; 
+    background: white; 
+    background: rgba(255,255,255,0.8); 
+    box-shadow: 0 0 15px rgba(0,0,0,0.2); 
+    border-radius: 5px; 
+        } 
+
+.info h2 { 
+    margin: 0 0 5px; 
+    color: #777; 
+}
+
+input {
+    font: 20px Arial, Helvetica, sans-serif; 
+}
+
+input[type=button]:hover {
+    background-color:rgba(255,204,0,0.8);
+}
+
+.btn-style{
+    border : solid 4px #e6e6e6;
+    border-radius : 16px;
+    moz-border-radius : 16px;
+    -webkit-box-shadow : inset 0px 0px 2px rgba(0,0,0,1.0);
+    -moz-box-shadow : inset 0px 0px 2px rgba(0,0,0,1.0);
+    box-shadow : inset 0px 0px 2px rgba(0,0,0,1.0);
+    font-size : 14px;
+    color : #696869;
+    padding : 9px 20px;
+    background : #ffffff;
+    background : -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(49%,#f1f1f1), color-stop(51%,#e1e1e1), color-stop(100%,#f6f6f6));
+    background : -moz-linear-gradient(top, #ffffff 0%, #f1f1f1 49%, #e1e1e1 51%, #f6f6f6 100%);
+    background : -webkit-linear-gradient(top, #ffffff 0%, #f1f1f1 49%, #e1e1e1 51%, #f6f6f6 100%);
+    background : -o-linear-gradient(top, #ffffff 0%, #f1f1f1 49%, #e1e1e1 51%, #f6f6f6 100%);
+    background : -ms-linear-gradient(top, #ffffff 0%, #f1f1f1 49%, #e1e1e1 51%, #f6f6f6 100%);
+    background : linear-gradient(top, #ffffff 0%, #f1f1f1 49%, #e1e1e1 51%, #f6f6f6 100%);
+    filter : progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#f6f6f6',GradientType=0 );
+
+}
+
+</style>
+
+<!--myJS -->
+<script src="js/leaflet.js"></script>
+<!-- <script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>-->
+
+<script src="shapefile/catiline.js"></script>
+<script src='https://api.tiles.mapbox.com/mapbox.js/v1.6.4/mapbox.js'></script>
+
+<!-- my css -->
+<link rel="stylesheet" href="fullscreen/Control.FullScreen.css" />
+
+<link rel="stylesheet" href="css/leaflet.locationlist.css" />
+
+<link href='https://api.tiles.mapbox.com/mapbox.js/v1.6.4/mapbox.css' rel='stylesheet' />
+<link rel="stylesheet" href="css/leaflet.css" />
+
+
+<script src="shapefile/leaflet.shpfile.js"></script>
+<script src="fullscreen/Control.FullScreen.js"></script>
+
+<!-- location plugin-->
+<script src="js/leaflet.locationlist.js"></script>
+
+<!-- draw plugin -->
+<script src="draw/src/Leaflet.draw.js"></script>
+<link rel="stylesheet" href="draw/dist/leaflet.draw.css" />
+
+<script src="draw/src/Toolbar.js"></script>
+<script src="draw/src/Tooltip.js"></script>
+
+<script src="draw/src/ext/GeometryUtil.js"></script>
+<script src="draw/src/ext/LatLngUtil.js"></script>
+<script src="draw/src/ext/LineUtil.Intersect.js"></script>
+<script src="draw/src/ext/Polygon.Intersect.js"></script>
+<script src="draw/src/ext/Polyline.Intersect.js"></script>
+<script src="draw/src/ext/TouchEvents.js"></script>
+
+<script src="draw/src/draw/DrawToolbar.js"></script>
+<script src="draw/src/draw/handler/Draw.Feature.js"></script>
+<script src="draw/src/draw/handler/Draw.SimpleShape.js"></script>
+<script src="draw/src/draw/handler/Draw.Polyline.js"></script>
+<script src="draw/src/draw/handler/Draw.Circle.js"></script>
+<script src="draw/src/draw/handler/Draw.Marker.js"></script>
+<script src="draw/src/draw/handler/Draw.Polygon.js"></script>
+<script src="draw/src/draw/handler/Draw.Rectangle.js"></script>
+
+<script src="draw/src/edit/EditToolbar.js"></script>
+<script src="draw/src/edit/handler/EditToolbar.Edit.js"></script>
+<script src="draw/src/edit/handler/EditToolbar.Delete.js"></script>
+
+<script src="draw/src/Control.Draw.js"></script>
+
+<script src="draw/src/edit/handler/Edit.Poly.js"></script>
+<script src="draw/src/edit/handler/Edit.SimpleShape.js"></script>
+<script src="draw/src/edit/handler/Edit.Circle.js"></script>
+<script src="draw/src/edit/handler/Edit.Rectangle.js"></script>
+<script src="draw/src/edit/handler/Edit.Marker.js"></script>
+
+<link rel="stylesheet" href="osm-overpass/OverPassLayer.css" />
+<script src="osm-overpass/OverPassLayer.js"></script>
+
+<!-- control geolocation -->
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://domoritz.github.io/leaflet-locatecontrol/dist/L.Control.Locate.min.css" />
+
+<script src="https://domoritz.github.io/leaflet-locatecontrol/dist/L.Control.Locate.min.js" charset="utf-8"></script>
+
+<!-- lens -->
+
+<link rel="stylesheet" href="plugins/leaflet.magnifyingglass.css" />
+<link rel="stylesheet" href="plugins/Control.MagnifyingGlass.css" />
+
+<script src="plugins/leaflet.magnifyingglass.js"></script>
+<script src="plugins/example_button.js"></script>
+
+</head>
+
+<body>
+
+<div id="map"></div>
+
+<script>
+    
+	if (L.Browser.ie6) {
+	    alert('Upgrade your browser, dude!');
+	}
+	
+	// Base Layers
+
+    var osm = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'});
+    
+
+    var stamen = L.tileLayer('http://tile.stamen.com/toner/{z}/{x}/{y}.png', {attribution: '&copy; <a href="http://maps.stamen.com">Stamen Design</a>'});
+
+    var mapquest =  L.tileLayer('http://otile{s}.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png',{subdomains: '1234'});
+
+
+   var mapboxTiles = L.tileLayer('https://api.mapbox.com/styles/v1/lenypa/cinmcikz0003qc7m5e0lzevdz/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibGVueXBhIiwiYSI6ImNpbXlwaXJwMTAwZ252d20xMnVtbzd6YWUifQ.et5DUYDAiSFzlpmdf8FP9w', {attribution: '<a href="http://www.mapbox.com/about/maps/" target="_blank">Terms &amp; Feedback</a>'
+    });
+
+   var OpenTopoMap = L.tileLayer('http://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+	maxZoom: 16,
+	attribution: 'Map data: &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
+	});
+
+	var mytile =L.tileLayer('data/tiles/{z}/{x}/{y}.png', {
+	maxZoom: 20,
+	tms: true,
+	attribution: 'Generated by QTiles'
+	});
+
+
+   // Overlay Layers
+
+    var kibele = L.tileLayer.wms("http://195.154.41.198/geoserver/geonode/wms?service=WMS&version=1.1.0", {
+        layers: 'geonode:kibele_merged_v2_transparent_mosaic_group1',
+        format: 'image/png',
+        transparent: true,
+        attribution: "Suza - World Bak Drone Imagery"
+    });
+
+    var meteo = L.tileLayer.wms("http://mesonet.agron.iastate.edu/cgi-bin/wms/nexrad/n0r.cgi", {
+    layers: 'nexrad-n0r-900913',
+    format: 'image/png',
+    transparent: true,
+    attribution: "Weather data © 2012 IEM Nexrad"
+    });
+
+    var forests = L.tileLayer.wms("http://195.154.41.198/geoserver/geonode/wms?service=WMS&version=1.1.0", {
+    layers: 'geonode:tza_coastal_forests_',
+    format: 'image/png',
+    transparent: true,
+    attribution: "ZEMA",
+    //crs:'EPSG:4326'
+    });
+	//forests.options.crs = L.CRS.EPSG3857;
+    
+    var eez = L.tileLayer.wms("http://195.154.41.198/geoserver/geonode/wms?service=WMS&version=1.1.0", {
+    layers: 'geonode:east_africa_eez',
+    format: 'image/png',
+    transparent: true,
+    attribution: "Marine Regions",
+    opacity: 0.65
+    //crs:'EPSG:4326'
+    });
+
+	
+
+
+    
+    //map instanciation
+    var map = L.map('map',{
+    center: [-6.19922, 39.30686],
+    zoom: 10,
+    layers: [mapboxTiles, kibele],
+    fullscreenControl: true,
+    fullscreenControlOptions: {
+    position: 'topleft'
+  }
+    });
+
+	drawnItems = L.featureGroup().addTo(map);
+
+
+    //geolocation
+    //map.locate({setView: true, maxZoom: 16});
+/*
+    function onLocationFound(e) {
+    var radius = e.accuracy / 2;
+
+    L.marker(e.latlng).addTo(map)
+        .bindPopup("You are within " + radius + " meters from this point").openPopup();
+
+    L.circle(e.latlng, radius).addTo(map);
+	}
+
+	map.on('locationfound', onLocationFound);
+
+	function onLocationError(e) {
+    alert(e.message);
+	}
+
+	map.on('locationerror', onLocationError);
+*/
+    //titles
+    var title = new L.Control(); 
+        title.onAdd = function (map) { 
+            this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info" 
+            this.update(); 
+            return this._div; 
+        }; 
+        title.update = function () { 
+ //           this._div.innerHTML = '<center><h2>Zanzibar Interactive Map</h2>2016<br><img src="img/logo_suza.png" /><br><input type=button class="btn-style" value="Locate me" onclick="map.locate({setView: true, maxZoom: 16})";/>'};
+  	this._div.innerHTML = '<center><h2>Zanzibar Interactive Map</h2>2016<br><img src="img/logo_suza.png" /></center>'};    
+        title.addTo(map);
+
+    //style
+    var myStyle = {
+        "color": "#ff7800",
+        "weight": 1,
+        "opacity": 0.65
+    };
+
+    var shpfile = new L.Shapefile('data/wards_wgs84.zip', {style: myStyle,
+                onEachFeature: function(feature, layer) {
+                    if (feature.properties) {
+                        layer.bindPopup(Object.keys(feature.properties).map(function(k) {
+                            return k + ": " + feature.properties[k];
+                        }).join("<br />"), {
+                            maxHeight: 200
+                        });
+                    }
+                }
+            });
+                shpfile.once("data:loaded", function() {
+                console.log("finished loaded shapefile");
+            });        
+
+
+    var baseLayers = {
+    "Stamen": stamen,
+    "OpenStreetMap": osm,
+    "Mapquest" : mapquest,
+    "Satellite": mapboxTiles,
+    "Landsat" : mytile
+
+    };
+
+    var overlays = {
+    "Forests" : forests,	
+    "Raster" : kibele,
+    "Meteo" : meteo,
+    "Wards" : shpfile,
+    "drawlayer": drawnItems,
+    "EEZ": eez
+    };
+
+    L.control.layers(baseLayers, overlays,{ position: 'topleft', collapsed: false }).addTo(map);
+
+    //list
+	var llist = L.control.locationlist({ showList: true, nextTitle: "Go Forward!"});
+	map.addControl(llist); 
+	
+	llist.on('next', function() { console.log("Switched to next!");});
+	llist.on('prev', function() { console.log("Switched to prev!");});  
+
+
+    //draw control
+	map.addControl(new L.Control.Draw({
+				edit: {
+					featureGroup: drawnItems,
+					poly : {
+						allowIntersection : false
+					}
+				},
+				draw: {
+					polygon : {
+						allowIntersection: false
+					}
+				}
+			}));
+
+			map.on('draw:created', function(event) {
+				var layer = event.layer;
+
+				drawnItems.addLayer(layer);
+			});  
+
+
+	//OverPassAPI overlay
+    var opl = new L.OverPassLayer({
+      endpoint: "http://overpass.osm.rambler.ru/cgi/",
+      query: "node(BBOX)['tourism'='museum'];out;",
+      callback: function(data) {
+        for(var i=0;i<data.elements.length;i++) {
+          var e = data.elements[i];
+
+          if (e.id in this.instance._ids) return;
+          this.instance._ids[e.id] = true;
+          var pos = new L.LatLng(e.lat, e.lon);
+          var popup = this.instance._poiInfo(e.tags,e.id);
+          var color = e.tags.collection_times ? 'green':'red';
+          var circle = L.circle(pos, 50, {
+            color: color,
+            fillColor: '#fa3',
+            fillOpacity: 0.5
+          })
+          .bindPopup(popup);
+          this.instance.addLayer(circle);
+        }
+      },
+      minZoomIndicatorOptions: {
+        position: 'topright',
+        minZoomMessageNoLayer: "no layer assigned",
+        minZoomMessage: "current Zoom-Level: CURRENTZOOM all data at Level: MINZOOMLEVEL"
+      }
+    });
+    map.addLayer(opl);
+
+    //control geolocation
+
+	L.control.locate().addTo(map);
+
+
+
+   //lens
+    var magnifyingGlass = L.magnifyingGlass({
+    zoomOffset: 3,
+    layers: [
+      L.tileLayer(osm)
+    ]
+  });
+
+  L.control.magnifyingglass(magnifyingGlass, { 
+    forceSeparateButton: true
+  }).addTo(map);
+
+</script>
+</body>
+</html>
