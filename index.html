@@ -53,6 +53,8 @@ input[type=button]:hover {
 
 }
 
+.zoom-level {font-size: 12px;font-family:Helvetica;}
+
 </style>
 
 <!--myJS -->
@@ -166,7 +168,7 @@ input[type=button]:hover {
         layers: 'geonode:kibele_merged_v2_transparent_mosaic_group1',
         format: 'image/png',
         transparent: true,
-        attribution: "Suza - World Bak Drone Imagery"
+        attribution: "Suza - World Bank Drone Imagery"
     });
 
     var meteo = L.tileLayer.wms("http://mesonet.agron.iastate.edu/cgi-bin/wms/nexrad/n0r.cgi", {
@@ -194,6 +196,16 @@ input[type=button]:hover {
     //crs:'EPSG:4326'
     });
 
+    //zmi-mosaic
+
+    var zmi_mosaic = L.tileLayer.wms("http://195.154.61.99/geoserver/wms?service=WMS&version=1.1.0", {
+    layers: 'zmi-mosaic',
+    format: 'image/png',
+    transparent: true,
+    attribution: "WB-SenseFly-OBSCOM",
+    opacity: 0.65
+    //crs:'EPSG:3857'
+    });
     
     //map instanciation
     var map = L.map('map',{
@@ -280,7 +292,8 @@ input[type=button]:hover {
     "Meteo" : meteo,
     "Wards" : shpfile,
     "drawlayer": drawnItems,
-    "EEZ": eez
+    "EEZ": eez,
+    "ZMI-Mosaic" : zmi_mosaic
     };
 
     L.control.layers(baseLayers, overlays,{ position: 'topleft', collapsed: false }).addTo(map);
@@ -338,7 +351,7 @@ input[type=button]:hover {
       minZoomIndicatorOptions: {
         position: 'topright',
         minZoomMessageNoLayer: "no layer assigned",
-        minZoomMessage: "current Zoom-Level: CURRENTZOOM all data at Level: MINZOOMLEVEL"
+        minZoomMessage: "<span class='zoom-level'>current Zoom-Level: CURRENTZOOM all data at Level: MINZOOMLEVEL</span>"
       }
     });
     map.addLayer(opl);
