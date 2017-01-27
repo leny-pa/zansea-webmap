@@ -141,6 +141,9 @@ input[type=button]:hover {
    
    var stamen = L.tileLayer('http://tile.stamen.com/toner/{z}/{x}/{y}.png', {attribution: '&copy; <a href="http://maps.stamen.com">Stamen Design</a>'});
    
+   var terrain = L.tileLayer('http://tile.stamen.com/terrain/{z}/{x}/{y}.png', {attribution: '&copy; <a href="http://maps.stamen.com">Stamen Design</a>'});
+
+
    var mapquest =  L.tileLayer('http://otile{s}.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png',{subdomains: '1234'});
    
    var mapboxTiles = L.tileLayer('https://api.mapbox.com/styles/v1/lenypa/cinmcikz0003qc7m5e0lzevdz/tiles/{z}/{x}/{y}?access_token=', {attribution: '<a href="http://www.mapbox.com/about/maps/" target="_blank">Terms &amp; Feedback</a>'
@@ -196,7 +199,7 @@ input[type=button]:hover {
     var map = L.map('map',{
     center: [-6.19922, 39.30686],
     zoom: 10,
-    layers: [osm, kibele],
+    layers: [terrain, kibele],
     fullscreenControl: true,
     fullscreenControlOptions: {
     position: 'topleft'
@@ -265,7 +268,7 @@ input[type=button]:hover {
     var baseLayers = {
     "Stamen": stamen,
     "OpenStreetMap": osm,
-    //"Mapquest" : mapquest,
+    "Terrain" : terrain,
     //"Satellite": mapboxTiles,
     //"Landsat" : mytile
 
