@@ -245,7 +245,7 @@ input[type=button]:hover {
         "opacity": 0.65
     };
 
-    var shpfile = new L.Shapefile('data/wards/wards_wgs84.zip', {style: myStyle,
+    var shpfile = new L.Shapefile('/shapefile/wards_wgs84.zip', {style: myStyle,
                 onEachFeature: function(feature, layer) {
                     if (feature.properties) {
                         layer.bindPopup(Object.keys(feature.properties).map(function(k) {
